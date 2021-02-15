@@ -3,10 +3,12 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import './App.global.css';
 import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
+import { Provider } from 'react-redux';
 import MainView from './pages/Main';
 import Category from './pages/Category';
 import Single from './pages/Single';
 import Favorite from './pages/Favorite';
+import index from './store';
 
 const Container = styled.div`
   max-width: 800px;
@@ -34,25 +36,27 @@ const routes = [
 export default function App() {
   return (
     <Container>
-      <Router>
-        {routes.map(({ path, Component }) => (
-          <Route key={path} exact path={path}>
-            {({ match }) => (
-              <CSSTransition
-                in={match != null}
-                timeout={200}
-                classNames="page"
-                unmountOnExit
-              >
-                <div className="page">
-                  <Component />
-                </div>
-              </CSSTransition>
-            )}
-          </Route>
-        ))}
-        <Redirect to="/home" />
-      </Router>
+      <Provider store={index}>
+        <Router>
+          {routes.map(({ path, Component }) => (
+            <Route key={path} exact path={path}>
+              {({ match }) => (
+                <CSSTransition
+                  in={match != null}
+                  timeout={200}
+                  classNames="page"
+                  unmountOnExit
+                >
+                  <div className="page">
+                    <Component />
+                  </div>
+                </CSSTransition>
+              )}
+            </Route>
+          ))}
+          <Redirect to="/home" />
+        </Router>
+      </Provider>
     </Container>
   );
 }

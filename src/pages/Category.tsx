@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 import Header from '../components/Header';
@@ -14,11 +14,7 @@ export const StyledCategory = styled.div`
 `;
 
 const Category = () => {
-  const [load, setLoad] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => setLoad(false), 10000);
-  }, []);
+  const [load] = useState(false);
 
   return (
     <>
