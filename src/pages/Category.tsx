@@ -1,9 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
+import { connect, ConnectedProps } from 'react-redux';
 import Header from '../components/Header';
 import CategoryItem from '../components/CategoryItem';
 import Loader from '../components/Loader';
+import { RootState } from '../store';
+import { toggleLoading } from '../store/app/actions';
+
+const mapState = (state: RootState) => ({
+  loading: state.App.loading,
+  items: state.Products.items,
+  count: state.Products.count,
+});
+
+const mapDispatch = {
+  setLoading: toggleLoading,
+};
+
+const connector = connect(mapState, mapDispatch);
 
 export const StyledCategory = styled.div`
   display: grid;
@@ -13,26 +28,31 @@ export const StyledCategory = styled.div`
   padding: 0 15px;
 `;
 
-const Category = () => {
-  const [load] = useState(false);
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
+const Category = ({ loading, setLoading, items }: PropsFromRedux) => {
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 5000);
+  }, []);
   return (
     <>
-      <CSSTransition in={load} timeout={200} classNames="page" unmountOnExit>
+      <CSSTransition in={loading} timeout={200} classNames="page" unmountOnExit>
         <Loader />
       </CSSTransition>
-      <CSSTransition timeout={200} classNames="page" unmountOnExit in={!load}>
+      <CSSTransition
+        timeout={200}
+        classNames="page"
+        unmountOnExit
+        in={!loading}
+      >
         <div style={{ overflow: 'auto', height: '100vh' }}>
           <Header mode="menu" title="" path="/home" />
           <StyledCategory>
-            <CategoryItem />
-            <CategoryItem />
-            <CategoryItem />
-            <CategoryItem />
-            <CategoryItem />
-            <CategoryItem />
-            <CategoryItem />
-            <CategoryItem />
+            {items.map((item) => (
+              // eslint-disable-next-line no-underscore-dangle
+              <CategoryItem key={item._id} />
+            ))}
           </StyledCategory>
         </div>
       </CSSTransition>
@@ -40,4 +60,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default connector(Category);

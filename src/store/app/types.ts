@@ -1,5 +1,12 @@
-export type AppStateType = {};
+export const TOGGLE_LOADING = 'TOGGLE_LOADING';
 
-type AppActionsType = {};
+export type AppStateType = {
+  loading: boolean;
+};
 
-export default AppActionsType;
+type ToggleLoadingAction = {
+  type: typeof TOGGLE_LOADING;
+  loading: boolean;
+};
+
+export type AppActionsType = ToggleLoadingAction;

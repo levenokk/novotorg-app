@@ -8,7 +8,7 @@ import MainView from './pages/Main';
 import Category from './pages/Category';
 import Single from './pages/Single';
 import Favorite from './pages/Favorite';
-import index from './store';
+import store from './store';
 
 const Container = styled.div`
   max-width: 800px;
@@ -29,14 +29,14 @@ const Container = styled.div`
 const routes = [
   { path: '/home', name: 'Home', Component: MainView },
   { path: '/category', name: 'Category', Component: Category },
-  { path: '/single', name: 'Category', Component: Single },
-  { path: '/favorite', name: 'Category', Component: Favorite },
+  { path: '/single', name: 'Single', Component: Single },
+  { path: '/favorite', name: 'Favorite', Component: Favorite },
 ];
 
 export default function App() {
   return (
-    <Container>
-      <Provider store={index}>
+    <Provider store={store}>
+      <Container>
         <Router>
           {routes.map(({ path, Component }) => (
             <Route key={path} exact path={path}>
@@ -56,7 +56,7 @@ export default function App() {
           ))}
           <Redirect to="/home" />
         </Router>
-      </Provider>
-    </Container>
+      </Container>
+    </Provider>
   );
 }

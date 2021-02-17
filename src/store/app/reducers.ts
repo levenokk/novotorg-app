@@ -1,9 +1,16 @@
-import { AppStateType } from './types';
+import { AppActionsType, AppStateType, TOGGLE_LOADING } from './types';
 
-const initialState: AppStateType = {};
+const initialState: AppStateType = {
+  loading: true,
+};
 
-const AppReducer = (state = initialState, action: any) => {
+const AppReducer = (state = initialState, action: AppActionsType) => {
   switch (action.type) {
+    case TOGGLE_LOADING:
+      return {
+        ...state,
+        loading: action.loading,
+      };
     default:
       return state;
   }
